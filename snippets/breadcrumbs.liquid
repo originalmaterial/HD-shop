@@ -1,0 +1,36 @@
+                        {% if template <> "index" %} 
+                           <ul class="breadcrumbs">
+                              <li class="home">
+                                 <a href="/" class="homepage-link" title="Back to the frontpage">Home</a>
+                              </li>
+                              {% if template contains "product" %}
+                                 {% if collection %}            
+                                    {% if collection.handle %}
+                                       {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+                                       <li>
+                                          {{ collection.title | link_to: url }}
+                                       </li>
+                                    {% elsif collection.all_products_count > 0 and collection.products.first.type == collection.title %}
+                                       <li>     
+                                          {{ collection.title | link_to_type }}
+                                       </li>
+                                    {% elsif collection.all_products_count > 0 and collection.products.first.vendor == collection.title %}
+                                       <li>
+                                          {{ collection.title | link_to_vendor }}
+                                       </li>
+                                    {% endif %}
+                                {% else %}
+                                    <li>
+                                       {{ product.type | link_to_type }}
+                                    </li>
+                                {% endif %}
+                              {% elsif template == "article" %}
+                                <li>
+                                   {{ blog.title | link_to: blog.url }}
+                                </li>
+                              {% endif %}
+                              <li class="current_item">
+                                <span class="page-title">{{ page_title }}</span>
+                              </li>
+                           </ul>
+                        {% endif %}

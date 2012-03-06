@@ -1,0 +1,16 @@
+{% unless settings.multiple-currency == 'disabled' %}
+<label for="currencies">Change Display Currency </label>
+<select id="currencies" name="currencies">
+{% for i in (1..64) %}
+  {% capture code %}{% cycle 'code' : 'USD','EUR','GBP','CAD','ARS','AUD','BSD','BHD','BRL','BGN','CLP','CNY','COP','CRC','HRK','CZK','DKK','XCD','EEK','FJD','GTQ','HKD','HUF','ISK','INR','IDR','ILS','JMD','JPY','JOD','KZT','KES','KWD','LVL','LTL','MXN','MYR','NZD','NGN','NOK','OMR','PEN','PHP','PLN','QAR','RON','RUB','SAR','SGD','SYP','ZAR','KRW','LKR','SEK','CHF','TWD','THB','TZS','TTD','TRY','UAH','AED','UYU','VEB' %}{% endcapture %}
+  {% capture setting %}currency-{{ code }}{% endcapture %}
+  {% capture label %}{% cycle 'label' : 'US Dollars (USD)','Euro (EUR)','UK Pounds (GBP)','Canadian Dollars (CAD)','Argentine Pesos (ARS)','Australian Dollars (AUD)','Bahamian Dollar (BSD)','Bahraini Dinar (BHD)','Brazilian Real (BRL)','Bulgarian Lev (BGN)','Chilean Peso (CLP)','Chinese Yuan Renminbi (CNY)','Colombian Peso (COP)','Costa Rican Colones (CRC)','Croatian Kuna (HRK)','Czech Koruny (CZK)','Danish Kroner (DKK)','East Caribbean Dollar (XCD)','Estonian Krooni (EEK)','Fijian Dollars (FJD)','Guatemalan Quetzal (GTQ)','Hong Kong Dollars (HKD)','Hungarian Forint (HUF)','Icelandic Kronur (ISK)','Indian Rupees (INR)','Indonesian Rupiah (IDR)','Israeli New Shekel (NIS)','Jamaican Dollars (JMD)','Japanese Yen (JPY)','Jordanian Dinar (JOD)','Kazakhstani Tenge (KZT)','Kenyan Shilling (KES)','Kuwaiti Dinar (KWD)','Latvian Lati (LVL)','Lithuanian Litai (LTL)','Mexican Pesos (MXN)','Malaysian Ringgits (MYR)','New Zealand Dollars (NZD)','Nigerian Naira (NGN)','Norwegian Kroner (NOK)','Omani Rial (OMR)','Peruvian Nuevo Sol (PEN)','Philippine Peso (PHP)','Polish Zlotych (PLN)','Qatari Rial (QAR)','Romanian Lei (RON)','Russian Rubles (RUB)','Saudi Riyal (SAR)','Singapore Dollars (SGD)','Syrian Pound (SYP)','South African Rand (ZAR)','South Korean Won (KRW)','Sri Lankan Rupees (LKR)','Swedish Kronor (SEK)','Swiss Francs (CHF)','Taiwan Dollars (TWD)','Thai baht (THB)','Tanzanian Shilling (TZS)','Trinidad and Tobago Dollars (TTD)','Turkish New Lira (YTL)','Ukrainian Hryvnia (UAH)','United Arab Emirates Dirham (AED)','Uruguayan Pesos (UYU)','Venezuelan Bolivares (VEB)' %}{% endcapture %}
+  {% if settings[setting] %}
+  <option value="{{ code }}"{% if shop.currency == code %} selected="selected"{% endif %}>{{ label }}</option>
+  {% endif %}
+{% endfor %}
+</select>
+<br/>
+<br/>
+<em>(NOTE: Checkout is in USD)</em>
+{% endunless %}

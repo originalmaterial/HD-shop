@@ -1,0 +1,89 @@
+<div class="cart">
+
+
+<script type="text/javascript">
+function remove_item(id) {
+  document.getElementById('updates_'+id).value = 0;
+  document.getElementById('cart').submit();
+}
+</script>
+
+<div class="extra-border clearfix">
+<h1>Shopping Cart</h1>
+</div><!-- .extra-line -->
+
+
+{% if cart.item_count == 0 %}
+    <p><strong>Your shopping basket is empty.</strong> Perhaps a featured item below is of interest...</p>
+	
+	
+
+		<table class="products">
+			{% tablerow product in collections[settings.frontpage_collection].products cols:4  %}
+			<a href="{{ product.url | within: collections.[settings.frontpage_collection] }}"><span><img src="{{ product.images.first | product_img_url: 'medium' }}" width="180" alt="{{ product.title | escape }}" /></span>{% if product.compare_at_price_max > product.price %}<em>sale</em>{% endif %}<strong>{{ product.title }}</strong><small>{{ product.price  | money }}</small></a>
+			{% endtablerow %}
+		</table>
+
+	
+{% else %}
+
+<form action="/cart" method="post" id="cart" >
+	<!-- BEGIN CUREBIT INTEGRATION CODE -->
+	<script src="https://www.curebit.com/public/scoc.js" type="text/javascript"></script>
+	<!-- END CUREBIT INTEGRATION CODE -->
+
+	<table>
+		<tr>
+			<th>Item Description</th>
+			<th>Price</th>
+			<th>Qty</th>
+			<th></th>
+			<th>Total</th>
+		</tr>{% for item in cart.items %}
+		<tr class="{% cycle 'odd', 'even' %}">
+			<td class="cart-product-details">
+                            <a href="{{ item.product.url }}"><img src="{% include 'product_variant_image' with item %}" alt="{{ item.title | escape }}"/></a>	<a href="{{ item.product.url }}">{{ item.title }}</a>
+			</td>
+			<td>{{ item.price | money }}</td>
+			<td><input type="text" size="4" name="updates[{{item.variant.id}}]" id="updates_{{ item.variant.id }}" value="{{ item.quantity }}" onfocus="this.select();"/></td>
+			<td><a href="#" onclick="remove_item({{ item.variant.id }}); return false;" >Remove</a></td>
+			<td>{{ item.line_price | money }}</td>
+		</tr>{% endfor %}
+	</table>
+	<div class="cart-options"> 
+		
+		<h2>Subtotal <strong>{{ cart.total_price | money }}</strong> + shipping</h2>
+
+        <div class="cart_recs">
+           <script id="expressrex" src="http://shopify.directededge.com/widget/related_products?products={%for item in cart.items%}{{item.product.id}},{%endfor%}" type="text/javascript" charset="utf-8"></script>
+        </div> 
+    
+        <table width="135" border="0" cellpadding="2" cellspacing="0">
+            <tr>
+                <td width="135" align="right" valign="top">    	<input type="submit" id="update-cart" name="update" value="Update Cart" />
+		or
+		<input class="standard-button" type="submit" name="checkout" value="Checkout" />
+            </tr>
+        </table>        
+
+<table width="135" border="0" cellpadding="2" cellspacing="0" title="Click to Verify - This site chose VeriSign Trust Seal to promote trust online with consumers.">
+<tr>
+<td width="135" align="right" valign="top"><script type="text/javascript" src="https://seal.verisign.com/getseal?host_name=shop.holgadirect.com&amp;size=S&amp;use_flash=NO&amp;use_transparent=NO&amp;lang=en"></script><br />
+</tr>
+</table>
+
+	</div>
+        <a href="{{ cart.items.first.product.collections.first.url }}" title="Continue Shopping"><< Continue Shopping</a>
+</form>{% endif %}
+
+       <ul class="creditcards">
+ <!-- PayPal Logo --><table border="0" cellpadding="10" cellspacing="0" align="center"><tr><td align="center"></td></tr>
+<tr><td align="center"><a href="#" onclick="javascript:window.open('https://www.paypal.com/hk/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside','olcwhatispaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=400, height=350');"><img  src="https://www.paypal.com/en_GB/HK/i/bnr/horizontal_solution_global_hk.gif" border="0" alt="Solution Graphics"></a></td></tr></table><!-- PayPal Logo -->
+        
+                </ul>
+
+       {% include 'shipping-calculator' %}
+
+	</div><!-- .cart -->
+    
+ 

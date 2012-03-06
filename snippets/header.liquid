@@ -1,0 +1,126 @@
+    		<div id="header" class="clearfix">
+
+				<div class="masthead clearfix">
+
+                    <div class="rb_toprow clearfix">
+                    <div class="rb_logo_container">
+					<div class="logo">
+						{% if settings.custom_logo %}
+                                                      
+						{% if template == "index" or template == "collection" %}<h1>{% else %}<h2>{% endif %}<a href="/"><img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}" /></a>{% if template == "index" %}</h1>{% else %}</h2>{% endif %}
+						{% else %}
+						<a href="/">{{ shop.name }}</a>
+						{% endif %}
+					</div>
+                    </div>
+                                        <div class="rb_fblike_container">
+                                            <div class="rb_fblike">
+                                        <iframe src="http://www.facebook.com/plugins/like.php?app_id=185656821498261&amp;href=www.facebook.com%2Fholgadirectfan&amp;send=false&amp;layout=box_count&amp;width=200&amp;show_faces=true&amp;action=like&amp;colorscheme=light&amp;font=segoe+ui&amp;height=90" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:90px;" allowTransparency="true"></iframe>
+                                            </div>
+                                        </div>
+
+                                        <div class="rb_googleplusone_container">
+                                            <div class="rb_googleplusone">
+
+                                                <!-- Place this tag where you want the +1 button to render -->
+                                                <g:plusone size="tall" href="http://shop.holgadirect.com" ></g:plusone>
+            
+                                                <!-- Place this tag after the last plusone tag -->
+                                                <script type="text/javascript">
+                                                    (function() {
+                                                        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                                                        po.src = 'https://apis.google.com/js/plusone.js';
+                                                        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+                                                    })();
+                                                </script>
+
+                                            </div>
+                                        </div>
+
+                                            <div class="rb_paypal">
+                                                <img src="{{ 'Paypal-crop.jpg' | asset_url }}" alt="Paypal" />
+                                            </div>
+
+<div class="rb_rhs clearfix">
+<div class="rb_ccy_container">
+    <div class="rb_ccy_switcher">
+                                        {% include 'currencies-switcher' %}
+    </div>
+</div>
+                    <div class="rb_vertical-navs_container">
+					<div class="vertical-navs clearfix">
+                        <div class="rb_cart">
+						<ul class="cart">
+							<li><a href="/cart/">Your Cart</a></li>
+							<li><a href="/cart/"> {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items'}}</a></li>
+							<li class="checkout {% if cart.item_count > 0 %}active{% else %}inactive{% endif %}"><a href="/cart/"><strong>Checkout</strong></a></li>
+						</ul>
+                        </div>
+					</div><!-- .vertical-navs -->
+                    </div>
+</div><!-- rb_rhs -->
+</div><!-- rb_toprow -->
+
+<div class="rb_tagline_container">
+    {% include 'mailchimp' %}
+</div>
+
+<div class="rb_verisign_container">
+<table width="100" border="0" cellpadding="2" cellspacing="0" title="Click to Verify - This site chose VeriSign Trust Seal to promote trust online with consumers.">
+<tr>
+<td width="135" align="center" valign="top"><script type="text/javascript" src="https://seal.verisign.com/getseal?host_name=shop.holgadirect.com&amp;size=S&amp;use_flash=NO&amp;use_transparent=NO&amp;lang=en"></script><br />
+<a href="http://www.verisign.com.hk/trust-seal" target="_blank"  style="color:#000000; text-decoration:none; font:bold 7px verdana,sans-serif; letter-spacing:.5px; text-align:center; margin:0px; padding:0px;"></a></td>
+</tr>
+</table>
+</div>
+
+
+                                    <div class="rb_shipping_container">
+                                        <div class="rb_shipping_img">
+                                            <a href="http://shop.holgadirect.com/pages/destinations-shipped-to"><img src="{{ 'WorldwideShipping2.gif' | asset_url }}" alt="Shipping" /></a>
+                                        </div>
+                                    </div>                                        
+                                        
+                                    <div class="rb_reseller_container">
+                                    <div class="rb_reseller">                                               
+                                        
+        <a href="https://www.resellerratings.com" onclick="window.open('https://seals.resellerratings.com/landing.php?seller=35665','name','height=760,width=780,scrollbars=1'); 
+        return false;">
+        <img style='border:none;' src='//seals.resellerratings.com/seal.php?seller=35665' 
+        oncontextmenu="alert('Copying Prohibited by Law - ResellerRatings seal is a Trademark of All Enthusiast, Inc.'); return false;" /></a>
+                                        </div>
+                                           
+                                        </div>   
+                                           
+				</div><!-- .mashead -->
+
+				<ul class="main-nav clearfix">
+					{% for link in linklists.[settings.linklist_nav].links %}
+						{% capture child_list_handle %}{{ link.title | handleize }}{% endcapture %}
+					
+					    <li class="{% if link.url == active_url %} current{% endif %}{% if template == 'article' and link.url == blog.url %} current_page_item{% endif %} {% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}dropdown{% endif %}">
+
+				         <a 
+					href="{{ link.url }}" title="{{ link.title }}">{{ link.title }}</a>
+
+								{% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
+								<div class="dropdown-ie">
+								<ul>
+									{% for l in linklists[child_list_handle].links %}
+									<li><a href="{{ l.url }}" ><span>{{ l.title }}</span></a></li>
+									{% endfor %}
+								</ul>
+								</div>
+								
+								{% endif %}
+
+				      </li>
+					{% endfor %}
+     				<li class="search-nav">
+						<form action="/search" method="get">
+							<input type="submit"  class="search-button" name="search-button" onclick="this.parentNode.submit(); return false;" id="seek" /><input type="text" class="search-text"  name="q" id="q" value="Search..." size="60"  /> 
+						</form>
+					</li>
+				</ul>
+
+			</div><!-- #header -->

@@ -1,0 +1,96 @@
+/* Undo background and gradiant */
+body, #main, #container, #header, #footer {
+  background: white !important;
+}
+
+#main {
+    background: white;
+    border: none;
+    border: #E5E5E5 1px solid;
+}
+
+#overview {
+    background: white;
+    align: center;
+    border: none;
+    padding: 0px;
+}
+
+#products {
+    float: left;
+    width: 480px;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: white;
+}
+
+#wallet {
+    margin-left: 481px;
+    padding: 5px 10px 10px 10px;
+    text-align: center;
+    width: 250px;
+}
+
+#thumbs {
+    margin: 20px 0 0 0;
+    padding: 0;
+    width: 100%;    
+}
+
+#thumbs img {
+  margin: 0;
+  padding: 0;
+  width: 50px;
+}
+
+/* Insert your own logo (upload separately) */
+#logo { 
+  height: 126px; /* Replace with height of your logo file */
+  background: url(HolgaDirect-Checkout-Logo-Crop.jpg) center center no-repeat;
+}
+
+/* Center-align the subtitle */
+#tagline {
+  text-align: center;
+}
+
+/* Hide the name of the store because we got this nifty logo now */
+#tagline .title {
+  display: none;
+}
+
+#gateway-logos {
+    text-align: center;
+    padding: 0px 5px 3px 5px;
+    margin: 0px auto 0px auto;
+}
+
+#content {
+    padding: 0px 10px 20px 10px ;
+}
+
+#buttons input {
+    font-weight: bold;
+    padding: 10px;
+    background: #FFDF94;
+    background: -moz-linear-gradient(top, #E9B330 0%, #FFDF94 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E9B330), color-stop(100%,#FFDF94));
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+#container.slim {
+    margin: auto;
+    width: 800px;
+}
+
+#container.slim #main {
+    width: 800px;    
+    padding: 0 15px;
+    background: url('../images/checkout/checkout-bg-slim.gif') bottom left repeat-y;
+}
+
+#container.slim #header {
+    width: 800px;
+    background: url('../images/checkout/checkout-bg-top-slim.gif') bottom left no-repeat;
+}

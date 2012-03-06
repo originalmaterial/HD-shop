@@ -1,0 +1,42 @@
+<div id="variants">
+   <form action="/cart/add" method="post">
+      <table width="100%" border="1" class="availability_table">
+	<thead>
+	   <tr>
+	      <th>Select</th>
+	      <th>Options</th>
+	      <th>Your Price</th>
+	      <th>Product Availability</th>
+	      <th>Handling time</th>
+	   </tr>
+	</thead>
+	<tbody>
+           {% for variant in product.variants %}
+	      <tr style="background: {% cycle '#fff', '#eee',%};" >
+		{% if variant.available == true %}
+	           <th><input type="radio" name="id" value="{{variant.id}}" id="radio_{{variant.id}}" {%if forloop.first%} checked="checked" {%endif%} /></th>
+		   <th><label for="radio_{{variant.id}}">{{ variant.title }}</label></th>
+		   <th>{{ variant.price | money }}</th>
+		      {% if variant.inventory_quantity > 0 %}
+			<th>In Stock</th>
+			<th>Ships Next Day</th>
+		      {% else %}
+			<th>On Order</th>
+			<th>Ships 1 to 2 weeks</th>
+		      {% endif %}
+		{% else %}
+		   <th>X</th>
+		   <th>{{ variant.title }}</th>
+		   <th>{{ variant.price | money }}</th>
+		   <th colspan="2">Expected Availability: March 2007</th>
+		{% endif %}
+	      </tr>
+	   {% endfor %}
+	</tbody>
+     </table>
+     <br/>
+     {% unless product.available == false %}			
+     <div><input type="submit" value="Add to Cart" name="Add" id="add" /></div>
+     {% endunless %}
+   </form>
+ </div>

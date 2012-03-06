@@ -1,0 +1,20 @@
+<h3>Share this with your friends</h3> 
+<div class="clear">
+<iframe src="http://www.facebook.com/plugins/like.php?href={{ shop.url }}{{ product.url }}&amp;layout=button_count&amp;show_faces=false&amp;width=150&amp;action=Like&amp;font=lucida+grande&amp;colorscheme=light" scrolling="no" frameborder="0" allowTransparency="true" style="border:none; overflow:hidden; width:150px; height:30px" allowTransparency="true"></iframe> 
+<script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script> 
+</div>
+<div class="facebookshare">
+<fb:share-button type="button_count" class="meta" title="Share on Facebook">
+<meta name="medium" content="mult"/>
+<meta name="title" content="Awesome ! Check out the {{ product.title}} at ${{ product.price | money_without_currency }}"/>
+<meta name="description" content="{{ product.description }}"/>
+<link rel="image_src" href="{{ product.image }}" />
+<link rel="target_url" href="{{ shop.url }}{{ product.url }}"/>
+</fb:share-button>
+</div>
+<div title="Click to tweet about {{ product.title }} on Twitter">
+<span class="twitter" title="Click to tweet about {{ product.title }} on Twitter">
+  <a href="http://twitter.com/share"{% if template == 'product' %} data-url="{{ shop.url }}{{ product.url }}"{% endif %} data-text="Awesome! {% if template == 'product' %}{{ product.title }} at ${{ product.price | money_without_currency }}{% else %}{{ page_title }}{% endif %}" class="twitter-share-button" data-count="horizontal" data-via="HolgaDirect" >Tweet</a>
+  <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+</span>
+</div>

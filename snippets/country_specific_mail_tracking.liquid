@@ -1,0 +1,5 @@
+{% if upcase(shipping_address.country) == 'UNITED STATES' %}
+   Woo Hoo! USA!
+{% else if upcase(shipping_address.country) == 'SPAIN' %}
+   Yippee! Spain!
+{% endif %}

@@ -1,0 +1,117 @@
+{% for link in linklists.[settings.linklist_nav].links %}
+{% if link.object.handle == collection.handle %}
+{% capture show_sub_nav %}yes{% endcapture %}
+{% endif %}
+{% endfor %}
+    
+{% if show_sub_nav == 'yes' %}
+<ul class="subnav clearfix">
+
+	{% if current_tags %}
+   <li><a href="{{ collection.url }}">All</a></li>
+  {% else %}
+   <li class="active"><a href="{{ collection.url }}">All</a></li>
+  {% endif %}
+  
+{% for tag in collection.all_tags %}
+
+    {% if current_tags contains tag %}
+    <li class="active">{{ tag | link_to_tag: tag }}</li>
+    {% else %}
+
+    <li>{{ tag | link_to_tag: tag }}</li>
+    {% endif %}
+
+  {% endfor %}
+
+</ul>
+{% endif %}
+
+{% paginate collection.products by settings.how_many_products %}
+{% if collection.products.size == 0 %}
+<strong>No products found in this collection.</strong>
+{% else %}
+
+    <table>
+    	{% tablerow product in collection.products cols:4  %}
+	 
+			<td valign="top"> 
+
+				<div class="rb_product-blurb"> 
+
+						<div class="rb_collection_price">
+						<span class="money">
+							{{ product.price | money }}
+						</span>
+						</div>
+
+
+
+                 {% assign prod = product.metafields.product %}
+                    {% assign key = 'flaglabel' %}    
+                    {% assign flagvalue = (prod[key]) %}                            
+
+                    {% if (flagvalue | size) >= 0 %}
+                        {% if flagvalue == 'hot' %}
+                            <div class="rb_product_img_hot">
+                        {% elsif flagvalue == 'new' %}
+                            <div class="rb_product_img_new">
+                        {% elsif flagvalue == 'blackfriday' %}
+                            <div class="rb_product_img_bf">
+                        {% elsif flagvalue == 'nysale' %}
+                            <div class="rb_product_img_nys">
+                        {% else %}
+                            <div class="rb_product_img">
+                        {% endif %}
+                    {% else %}
+                        <div class="rb_product_img">
+                    {% endif %}
+
+					<a href="{{ product.url | within: collection.products }}">
+                        <span></span>
+						<img src="{{ product.images.first | product_img_url: 'medium' }}" width="180"  alt="{{ product.title | escape }}" />
+					</a>
+	
+                    </div>
+    
+					<br>
+ 
+					<span class="rb_product-name">
+						<a href="{{ product.url | within: collection.products }}">
+							{{ product.title }}
+						</a>
+					</span>
+
+					<br>
+ 
+					<div class="product-oneliner">
+
+                        {% assign prod = product.metafields.product %}
+                        {% assign key = 'oneliner' %}    
+                        {% assign oneliner = (prod[key] | tuncate: 90) %}                            
+
+                        {% assign social = product.metafields.social %}
+                        {% assign key = 'fbLikeText' %}    
+                        {% assign fbLikeText = (social[key] | truncate: 90) %}
+
+                        {% if (oneliner | size) >= 0 %}
+                            {{ oneliner }}
+                        {% else %}
+                            {{ fbLikeText }}
+                        {% endif %}
+					
+						<a href="{{ product.url | within: collection }}">		
+							View&nbsp;&rarr;
+						</a>
+					</div> 
+				</div> 
+			</td> 
+		{% endtablerow %}
+	</table>
+
+{% if paginate.pages > 1 %}
+<div id="paginate">
+  {{ paginate | default_pagination }}
+</div>{% endif %}{% endif %}
+{% endpaginate %}
+

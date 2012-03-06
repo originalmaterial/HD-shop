@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:og="http://ogp.me/ns#"
+xmlns:fb="http://www.facebook.com/2008/fbml">
+<head>
+	<script src="//cdn.optimizely.com/js/8405582.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	{% include 'meta' %}
+
+	<meta name="google-site-verification" content="8KD0uMzkXh3qFzlzC3njn10fnBDiQS3VuiVgpWFTAfE" />
+
+	{{ "prototype.js" | asset_url | script_tag }}
+	{{ "scriptaculous.js?load=effects,builder" | asset_url | script_tag }}
+	{{ "lightbox.js" | asset_url | script_tag }}
+
+	{{ 'stylesheet.css' | asset_url | stylesheet_tag }}
+	<!-- jQuery -->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<!-- TypeKit -->
+	<script type="text/javascript" src="https://use.typekit.com/lsw5ink.js"></script>
+	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+	<!--[if IE 7]>
+	{{ 'ie7.css' | asset_url | stylesheet_tag }}
+	<![endif]-->
+	{{ 'bxslider.js' | asset_url | script_tag }}
+	{{ 'fancybox.js' | asset_url | script_tag }}
+	{{ 'option_selection.js' | shopify_asset_url | script_tag }}
+	{{ 'paradigm.js' | asset_url | script_tag }}
+	
+	{{ content_for_header }}
+
+	{% capture active_url %}{% if template == "index" %}/{% elsif template == "collection" %}/collections/{{ collection.handle }}{% elsif template == "product" %}{% if collection %}/collections/{{ collection.handle }}{% endif %}{% elsif template == "page" %}/pages/{{ page.handle }}{% elsif template == "blog" %}/blogs/{{ blog.handle }}{% elsif template == "cart" %}/cart{% elsif template == "search" %}/search{% endif %}{% endcapture %}
+
+	<style type="text/css">
+
+	.mc_embed_signup label {
+		display: block;
+		font-size: 11px;
+		padding-bottom: 10px;
+		font-weight: bold;
+	}
+
+	.mc_embed_signup input.button {
+		background: #AAA;
+		border: 0 none;
+		border-radius: 4px;
+		color: white;
+		cursor: pointer;
+		display: inline-block;
+		font-size: 12px;
+		height: 32px;
+		line-height: 32px;
+		margin: 0 5px 10px 0;
+		padding: 0;
+		text-align: center;
+		text-decoration: none;
+		vertical-align: top;
+		white-space: nowrap;
+		width: 100px;
+		float: right;
+		text-shadow: none;
+	}
+
+	</style>
+
+</head>
+
+<body id="page-{{ template }}">
+
+	<div id="wrapper">
+		<div class="rb_container_wrapper">
+			<div class="rb_container">
+				{% include 'header' %}
+
+
+				{% include 'breadcrumbs' %}
+
+				<div class="content clearfix">
+
+					{{ content_for_layout }}
+
+				</div><!-- .content -->
+			</div>
+		</div><!-- #cont --> 
+
+		<br/>
+
+		<div id="wrapper">
+			<div class="rb_container_wrapper">
+				<div class="rb_container">
+					<div class="content clearfix">
+						{% include 'myfooterlinks' %}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="footer" class="clearfix">
+			<div class="footer-wrapper">
+
+				<div class="footer-details">
+					<div class="clearfix">
+
+
+
+						<ul class="footer-links">
+							<li>Copyright &copy; HolgaDirect {{ 'now' | date: "%Y" }}</li>
+							{% if settings.include_themeauthorlink %}
+							<li>
+								Design by <a href="http://www.markdunkley.com">Mark Dunkley</a>
+							</li> 
+							{% endif %}
+
+							{% if settings.include_shopifylink %}
+							<li>Built with <a href="y">Shopify</a>
+							</li>
+							{% endif %}
+
+							{% for link in linklists.footer.links %}
+							<li><a href="{{ link.url }}">{{ link.title }}</a></li>
+							{% endfor %}
+						</ul>
+
+						<p>{{ settings.store_address }}</p>
+
+					</div>
+				</div>
+
+				{% if settings.enable_creditcards %}
+
+				<ul class="creditcards">
+
+					<!-- PayPal Logo --><table border="0" cellpadding="10" cellspacing="0" align="center"><tr><td align="center"></td></tr>
+					<tr><td align="center"><a href="#" onclick="javascript:window.open('https://www.paypal.com/hk/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside','olcwhatispaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=400, height=350');"><img  src="https://www.paypal.com/en_GB/HK/i/bnr/horizontal_solution_global_hk.gif" border="0" alt="Solution Graphics"></a></td></tr></table><!-- PayPal Logo -->
+
+				</ul>
+				{% endif %}
+
+				{% if settings.show_socialmedia %}
+				<ul class="socialmedia">
+					{% if settings.show_facebook %}
+					<li><a href="{{ settings.facebook_url }}">{{ 'icon-facebook-small.png' | asset_url | img_tag: 'Visit the HolgaDirect Fan Page on Facebook' }}</a></li>
+					{% endif %}
+					{% if settings.show_mail %}
+					<li><a href="mailto:{{ settings.mail_url }}">{{ 'icon-mail-small.png' | asset_url | img_tag }}</a></li>
+					{% endif %}
+					{% if settings.show_rss %}
+					<li><a href="{{ settings.rss_url }}">{{ 'icon-rss-small.png' | asset_url | img_tag }}</a></li>
+					{% endif %}
+					{% if settings.show_flickr %}
+					<li><a href="{{ settings.flickr_url }}">{{ 'icon-flickr-sml.png' | asset_url | img_tag }}</a></li>
+					{% endif %}
+					{% if settings.show_twitter %}
+					<li><a href="{{ settings.twitter_url }}">{{ 'icon-twitter-small.png' | asset_url | img_tag }}</a></li>
+					{% endif %}
+				</ul>
+				{% endif %}
+
+			</div><!-- .footer-wrapper -->
+		</div><!-- .footer -->
+	</div><!-- .wrapper -->
+
+	{% include 'currencies' %}
+
+	<script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script>
+	<script type="text/javascript">
+	setTimeout(function(){var a=document.createElement("script");
+		var b=document.getElementsByTagName('script')[0];
+		a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0011/7851.js";
+		a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+	</script>
+</body>
+</html>

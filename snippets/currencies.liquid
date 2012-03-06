@@ -1,0 +1,51 @@
+{% unless settings.multiple-currency == 'disabled' %}
+
+<script type="text/javascript">
+
+if (typeof jQuery === 'undefined') {
+  document.write('<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"><\/script>');
+  document.write('<script type="text/javascript">jQuery.noConflict();<\/script>');
+}
+
+</script>
+
+{{ "/services/javascripts/currencies.js" | script_tag }}
+{{ "jquery.currencies.min.js" | asset_url | script_tag }}
+
+<script type="text/javascript">
+
+{% if settings.currency-format %}
+Currency.format = '{{ settings.currency-format }}';
+{% endif %}
+
+var shopCurrency = '{{ shop.currency }}';
+var cookieCurrency = Currency.cookie.read();
+
+if (cookieCurrency == null) {
+  Currency.currentCurrency = shopCurrency;
+}
+else if (jQuery('[name=currencies] option[value=' + cookieCurrency + ']').size() == 0) {
+  Currency.currentCurrency = shopCurrency;
+  Currency.cookie.destroy();
+}
+else if (cookieCurrency == shopCurrency) {
+  Currency.currentCurrency = shopCurrency;
+}
+else {
+  Currency.currentCurrency = cookieCurrency;
+  Currency.convertAll(shopCurrency, cookieCurrency);
+}
+
+jQuery('[name=currencies]').val(Currency.currentCurrency).change(function() {
+  Currency.convertAll(Currency.currentCurrency, jQuery(this).val());
+});
+
+var original_selectCallback = window.selectCallback;
+var selectCallback = function(variant, selector) {
+  original_selectCallback(variant, selector);
+  Currency.convertAll(shopCurrency, jQuery('[name=currencies]').val());
+};
+
+</script>
+
+{% endunless %}

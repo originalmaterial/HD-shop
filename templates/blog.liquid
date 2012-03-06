@@ -1,0 +1,45 @@
+<div class="blog">
+	<div class="blog-header clearfix">
+		<h1>{{ blog.title }}</h1>
+	</div>
+</div><!-- .blog -->
+
+{% paginate blog.articles by 2 %}
+
+{% for article in blog.articles %}
+
+<div class="post clearfix">
+
+<div class="post-meta col-4">
+	<h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
+	<p class="meta"><em>{{ article.created_at | date: "%d.%m.%Y. " }}</em> <br/>{% if blog.comments_enabled? %}
+		<a href="{{ article.url }}#comments">{{ article.comments_count }} {{  article.comments_count | pluralize: 'comment', 'comments' }}</a>{% endif %}</p>
+
+	</div>
+
+	<div class="col-6 last post-details">
+		<div class="read-icon"><a href="{{ article.url }}"><img src="{{ 'icon-readmore.png' | asset_url }}"/></a></div>	
+		<div class="post-content">
+			{{ article.content }}
+			<a  href="{{ article.url }}">Continue Reading &rsaquo;</a>
+		</div><!-- .post-content  -->
+	</div>
+	
+	</div>
+	<!-- post -->
+
+	{% endfor %}
+
+	{% if paginate.pages > 1 %}
+
+	<div class="pagination" class="clearfix">
+		{{ paginate | default_pagination }}
+	</div>
+
+	{% endif %}
+
+	{% endpaginate %}
+
+
+
+

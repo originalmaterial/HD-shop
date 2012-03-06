@@ -1,0 +1,16 @@
+{% if item.product.variants.size > 1 %}
+   {% assign found = false %}
+   {% capture title %}{{ item.variant.option1 | handleize }}{% endcapture %}
+   {% for img in item.product.images %}
+      {% capture img_title %}{{ img | handleize }}{% endcapture %}
+      {% if found == false and img_title contains title %}
+         {{ img | product_img_url: 'thumb' }}
+         {% assign found = true %}
+      {% endif %}
+   {% endfor %}
+{% endif %}
+
+{% if found == false or item.product.options.size == 1 %}
+   {{ item.product.images.first | product_img_url: 'thumb' }}
+{% endif %}
+ 

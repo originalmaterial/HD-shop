@@ -1,0 +1,59 @@
+{% comment %}
+Here you ignore products that don't have exactly the number of variants you use for your 
+tiered-priced products. Edit that number if your tiered-price products have more than 3 variants.
+{% endcomment %}
+
+{% assign pricing = product.metafields.pricing %}
+{% assign key = 'tiered' %}
+
+{% if pricing[key] != 'yes' %}
+
+  {% assign found_variant = false %}
+  {% assign index = 1 %}
+
+  {% comment %}Determining if our item is the 1st, 2nd or 3rd variant of its product.{% endcomment %} 
+  {% for variant in item.product.variants %}
+  {% if found_variant == false and variant.id == item.id %}
+    {% assign found_variant = true %}
+    {% assign index = forloop.index %}
+  {% endif %}
+  {% endfor %}
+
+  {% if found_variant %}
+    {% case index %}
+    
+      {% comment %}First variant: less expensive one{% endcomment %}
+      {% comment %}Edit the 3 occurrences of the number 100 here.{% endcomment %}  
+      {% when 1 %}
+        {% if item.quantity < 3 %}
+        <input type="text" class="field" name="updates[{{ item.id }}]" id="updates_{{ item.id }}" value="3" />
+        {% assign needs_update = true %}
+        {% else %}
+        <input type="text" class="field" name="updates[{{ item.id }}]" id="updates_{{ item.id }}" value="{{ item.quantity }}" min="3" />
+        {% endif %}
+        
+      {% comment %}Second variant{% endcomment %}
+      {% comment %}Edit the 3 occurrences of the number 50 and the 1 occurrence of the number 99 here.{% endcomment %} 
+      {% when 2 %}
+        {% if item.quantity < 2 %}
+        <input type="text" class="field" name="updates[{{ item.id }}]" id="updates_{{ item.id }}" value="2" />
+        {% assign needs_update = true %}
+        {% else %}
+        <input type="text" class="field" name="updates[{{ item.id }}]" id="updates_{{ item.id }}" value="{{ item.quantity }}" min="2" max="2" />
+        {% endif %}
+
+      {% comment %}Third variant - minimum quantity is 1{% endcomment %}
+      {% comment %}Edit the 1 occurrence of the number 49 here.{% endcomment %} 
+      {% when 3 %}
+        <input type="text" class="field" name="updates[{{ item.id }}]" id="updates_{{ item.id }}" value="{{ item.quantity }}" min="0" max="1" />
+
+      {% comment %}If you have more variants (prices) than 3 add a case, or more, here.{% endcomment %}
+
+    {% endcase %}
+  {% else %}
+  <input type="text" class="field" name="updates[{{ item.id }}]" id="updates_{{ item.id }}" value="{{ item.quantity }}" />
+  {% endif %}
+
+{% else %}
+<input type="text" class="field" name="updates[{{ item.id }}]" id="updates_{{ item.id }}" value="{{ item.quantity }}" />
+{% endif %}

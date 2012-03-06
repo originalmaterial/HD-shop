@@ -1,0 +1,29 @@
+<script>
+if (typeof jQuery === 'undefined') {
+  document.write('<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"><\/script>');
+  document.write('<script type="text/javascript">jQuery.noConflict();<\/script>');
+}
+</script>
+
+{% if needs_update %}
+<script type="text/javascript"> 
+jQuery('form[action="/cart"]').get(0).submit();
+</script>
+{% endif %}
+
+<script type="text/javascript">
+jQuery(function() {
+  jQuery(':text[name^=updates]').change(function() {
+    var min = parseInt(jQuery(this).attr('min'), 10) || 0;
+    var max = parseInt(jQuery(this).attr('max'), 10) || 9999999;
+    var qty = parseInt(jQuery(this).val(), 10);
+    if (qty < min) {
+      jQuery(this).val(min);
+    }
+    else if (qty > max) {
+      jQuery(this).val(max);
+    }
+    return true;
+  });
+});
+</script>

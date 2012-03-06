@@ -1,0 +1,216 @@
+<!--  single image  -->
+{% if settings.slideshow_limit == 'one' %}
+<div class="slideshow">
+    <div id="home-slider">
+    	<ul>
+			<li><a href="{{ settings.slide1_link }}"><img src="{{ 'slideshow1.jpg' | asset_url }}" /></a></li>
+		</ul>
+	</div><!-- #slideshow -->
+</div><!-- .slideshow-shadow -->
+{% endif %}   
+
+
+
+{% if settings.slideshow_limit != empty and settings.slideshow_limit != 'one' %}
+<div class="slideshow">
+	<script type="text/javascript" charset="utf-8">
+    
+	    $(document).ready(function(){
+            $('#home-slider').bxSlider({
+                auto: true,
+                speed: 1000,
+                pause: 5000
+            });
+        });
+
+	</script>
+
+		<ul id="home-slider">
+			{% case settings.slideshow_limit %}
+
+			{% when 'one' %}
+			<li><a href="{{ settings.slide1_link }}"><img src="{{ 'slideshow1.jpg' | asset_url }}" width="925px" height="180px" /></a></li>
+
+			{% when 'two' %}
+			<li><a href="{{ settings.slide1_link }}"><img src="{{ 'slideshow1.jpg' | asset_url }}" width="925px" height="180px" /></a></li>
+			<li><a href="{{ settings.slide2_link }}"><img src="{{ 'slideshow2.jpg' | asset_url }}" width="925px" height="180px"/></a></li>
+                                     
+                                     
+			{% when 'three' %}             
+			<li><a href="{{ settings.slide1_link }}"><img src="{{ 'slideshow1.jpg' | asset_url }}" width="925px" height="180px"/></a></li>
+			<li><a href="{{ settings.slide2_link }}"><img src="{{ 'slideshow2.jpg' | asset_url }}" width="925px" height="180px"/></a></li>
+			<li><a href="{{ settings.slide3_link }}"><img src="{{ 'slideshow3.jpg' | asset_url }}" width="925px" height="180px"/></a></li>
+                                     
+                                     
+			{% when 'four' %}              
+			<li><a href="{{ settings.slide1_link }}"><img src="{{ 'slideshow1.jpg' | asset_url }}" width="925px" height="180px"/></a></li>
+			<li><a href="{{ settings.slide2_link }}"><img src="{{ 'slideshow2.jpg' | asset_url }}" width="925px" height="180px"/></a></li>
+			<li><a href="{{ settings.slide3_link }}"><img src="{{ 'slideshow3.jpg' | asset_url }}" width="925px" height="180px"/></a></li>
+			<li><a href="{{ settings.slide4_link }}"><img src="{{ 'slideshow4.jpg' | asset_url }}" width="925px" height="180px"/></a></li>
+                                     
+                                     
+			{% when 'five' %}              
+			<li><a href="{{ settings.slide1_link }}"><img src="{{ 'slideshow1.jpg' | asset_url }}" width="925px" height="180px"/></a></li>
+			<li><a href="{{ settings.slide2_link }}"><img src="{{ 'slideshow2.jpg' | asset_url }}" width="925px" height="180px"/></a></li>
+			<li><a href="{{ settings.slide3_link }}"><img src="{{ 'slideshow3.jpg' | asset_url }}" width="925px" height="180px"/></a></li>
+			<li><a href="{{ settings.slide4_link }}"><img src="{{ 'slideshow4.jpg' | asset_url }}" width="925px" height="180px"/></a></li>
+			<li><a href="{{ settings.slide5_link }}"><img src="{{ 'slideshow5.jpg' | asset_url }}" width="925px" height="180px"/></a></li>
+			{% endcase %}
+		</ul>
+
+</div><!-- .slideshow -->
+{% endif %}
+
+<div id="content" class="clearfix"> 
+
+    <div class="as_seen_in clearfix"> 
+        <img src="{{ 'AsSeenIn2.jpg' | asset_url }}" /></a>
+    </div>
+
+    <div class="rb_hotsellers">
+    </div>
+
+    <div class="rb_directededgehot">
+        <script id="expressrex" src="http://shopify.directededge.com/widget/top_products" type="text/javascript" charset="utf-8"></script>   
+    </div>
+
+	{% if settings.frontpage_collection != empty %}
+
+    <table>
+		{% tablerow product in collections[settings.frontpage_collection].products cols:4  %}
+	 
+			<td valign="top"> 
+
+				<div class="rb_product-blurb"> 
+
+						<div class="rb_collection_price">
+						<span class="money">
+							{{ product.price | money }}
+						</span>
+						</div>
+
+
+                    {% assign prod = product.metafields.product %}
+                    {% assign key = 'flaglabel' %}    
+                    {% assign flagvalue = (prod[key]) %}                            
+
+                    {% if (flagvalue | size) >= 0 %}
+                        {% if flagvalue == 'hot' %}
+                            <div class="rb_product_img_hot">
+                        {% elsif flagvalue == 'new' %}
+                            <div class="rb_product_img_new">
+                        {% elsif flagvalue == 'blackfriday' %}
+                            <div class="rb_product_img_bf">
+                        {% elsif flagvalue == 'nysale' %}
+                            <div class="rb_product_img_nys">                            
+                        {% else %}
+                            <div class="rb_product_img">
+                        {% endif %}
+                    {% else %}
+                        <div class="rb_product_img">
+                    {% endif %}
+
+					    <a href="{{ product.url | within: collections.[settings.frontpage_collection] }}">
+                            <span></span>
+						    <img src="{{ product.images.first | product_img_url: 'medium' }}" width="180"  alt="{{ product.title | escape }}" />
+					    </a>
+
+                    </div>
+
+                    <br>
+ 
+					<span class="rb_product-name">
+						<a href="{{ product.url | within: collections.[settings.frontpage_collection] }}">
+							{{ product.title }}
+						</a>
+					</span>
+
+					<br>
+ 
+					<div class="product-oneliner">
+
+                        {% assign prod = product.metafields.product %}
+                        {% assign key = 'oneliner' %}    
+                        {% assign oneliner = (prod[key] | tuncate: 90) %}                            
+
+                        {% assign social = product.metafields.social %}
+                        {% assign key = 'fbLikeText' %}    
+                        {% assign fbLikeText = (social[key] | truncate: 90) %}
+
+                        {% if (oneliner | size) >= 0 %}
+                        
+                            {{ oneliner }}
+                            
+                        {% else %}
+                        
+                            {{ fbLikeText }}
+                            
+                        {% endif %}
+					
+						<a href="{{ product.url | within: collections.[settings.frontpage_collection] }}">		
+							View&nbsp;&rarr;
+						</a>
+
+					</div> 
+
+				</div> 
+			</td> 
+		{% endtablerow %}
+	</table>
+
+	{% endif %}
+
+
+	{% if linklists[settings.linklist_category] != empty %}
+	<table class=" categories">
+		{% tablerow link in linklists[settings.linklist_category].links cols:4 %}
+		{% if link.url contains "/collections/" %}
+		<div class="collection">
+			<a href="{{ link.url }}"><span><img src="{{ collections[link.object.handle].products.first.featured_image | product_img_url: 'medium' }}" width="180" alt="{{ product.title | escape }}" /></span><strong>{{ link.object.title }}</strong></a> 
+		</div>
+		{% endif %}
+		{% endtablerow %}
+	</table>
+	{% endif %}
+
+
+	{% if settings.frontpage_right and settings.frontpage_left != empty %}
+	<ul class="two-pages clearfix">
+		{% if settings.frontpage_left != empty %}
+		<li>
+			{{ pages[settings.frontpage_left].content}}
+		</li>
+		{% endif %}
+
+		{% if settings.frontpage_right != empty %}
+		<li>
+			{{ pages[settings.frontpage_right].content}}
+		</li>
+		{% endif %}
+	</ul>
+	{% endif %}
+
+        {% if settings.frontpage_3images %}
+              <ul class="three-pages clearfix">
+                  <li><a href="{{ settings.frontpage_3images_one_url }}"><img src="{{ 'frontpage_3images_one.jpg' | asset_url }}"/></a></li>
+	          <li><a href="{{ settings.frontpage_3images_two_url }}"><img src="{{ 'frontpage_3images_two.jpg' | asset_url }}"/></a></li>
+	          <li><a href="{{ settings.frontpage_3images_three_url }}"><img src="{{ 'frontpage_3images_three.jpg' | asset_url }}"/></a></li>
+              </ul>
+        {% endif %}
+
+        {% if settings.frontpage_3pages %}
+              <ul class="three-pages clearfix">
+                  <li>{{ pages[settings.frontpage_3pages_one].content}}</li>
+                  <li>{{ pages[settings.frontpage_3pages_two].content}}</li>
+        	  <li>{{ pages[settings.frontpage_3pages_three].content}}</li>
+              </ul>
+        {% endif %}
+
+
+</div><!-- #content -->
+
+
+
+
+
+

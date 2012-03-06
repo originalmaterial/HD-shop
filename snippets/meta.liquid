@@ -1,0 +1,77 @@
+{% assign maxwords = 20 %}
+
+<meta property="og:site_name" content="HolgaDirect" />
+
+{% case template %}
+
+    {% when 'collection' %}
+        <title>{{ page_title }} - HolgaDirect</title>
+        <meta name="description" content="{{page_title}}{% if collection.description.size > 0 %}: {{collection.description | strip_html | truncatewords:maxwords}}{% endif %}" />
+        <meta name="keywords" content= "{{collection.title}}{% if collection.tags.size > 0 %}: {{ collection.tags | join: ', ' }}{% endif %}" />
+
+    {% when 'product' %}
+
+        {% assign seo = product.metafields.seo %}
+
+        {% if seo.pagetitle.size > 0 %} 
+            <title>{{ seo.pagetitle }} - HolgaDirect</title>    
+        {% else %}
+            <title>{{ product.title }} - HolgaDirect</title>
+        {% endif %}
+
+        {% if seo.metadescription.size > 0 %} 
+              <meta name="description" content="{{ seo.metadescription }}" />
+        {% else %}
+              <meta name="description" content="{{page_title}}{% if product.description.size > 0 %}: {{product.description | strip_html | truncatewords:maxwords}}{% endif %}" />
+        {% endif %}
+
+        {% if seo.metakeywords.size > 0 %} 
+              <meta name="keywords" content="{{ seo.metakeywords }}" />
+        {% else %}
+              <meta name="keywords" content="{% if product.tags.size > 0 %} {{ product.tags | join: ', ' }}{% endif %}" />
+        {% endif %}
+
+        {% assign social = product.metafields.social %}
+
+        {% if social.fbLikeText.size > 0 %} 
+              <meta property="og:title" content="{{ social.fbLikeText }}"/>
+        {% else %}
+              <meta property="og:title" content="{{ product.title }} at ONLY ${{ product.price | money_without_currency }} USD"/>
+        {% endif %}
+
+        {% if social.fbShareDesc.size > 0 %} 
+              <meta property="og:description" content="{{ social.fbShareDesc }}"/>
+        {% else %}
+              <meta property="og:description" content="{{ product.description }}"/>
+        {% endif %}
+
+        <meta property="og:type" content="product"/>
+        <meta property="og:url" content="{{ shop.url }}{{ product.url }}"/>
+        <meta property="og:image" content="{{ product.featured_image | product_img_url: 'compact' }}"/>
+        <meta property="fb:admins" content="100002102161566,100001345381551"/>
+
+    {% when 'page' %}
+        <title>{{ page_title }} | {{ shop.name }}</title>
+        <meta name="description" content="{{page_title}}: {{page.content | strip_html | truncatewords:maxwords}}" />
+        <meta name="keywords" content="{{page_title}}" />
+
+    {% when 'blog' %}
+        <title>{{ page_title }} | {{ shop.name }}</title>
+        <meta name="description" content="{{page_title}}" />
+        <meta name="keywords" content="{{page_title}}" />
+
+    {% when 'article' %}
+        <title>{{ page_title }} | {{ shop.name }}</title>
+
+    {% when 'index' %}
+        <title>Buy Holga Camera, Accessory and Digital Holga Lenses - HolgaDirect</title>
+
+        <meta name="keywords" content="holga, digital, holga 135, holga cameras, digital holga, nikon, canon, holga 120, 120n, camera, bc, 135mm, CFN, 35mm, lens, accessory, accessories, tlr, plastic, holgadirect, canon, nikon, fisheye, tele, wide, tlr, holga direct, holgas, buy, online, store, shop, toycamera, hogla, kamera" />
+        <meta name="description" content="Buy Holga Camera, Accessories and Digital Holga Lenses Online from HolgaDirect shop. 120, 135, 35mm cameras and accessories including holgaroid, lenses, Tele, Wide, Digital" />
+
+    {% else %}
+        <title>{{ page_title }} | {{ shop.name }}</title>
+        <meta name="description" content="{{shop.name}}{% if blogs.[indexblog].articles.size > 0 %}: {% for article in blogs.[indexblog].articles limit:1 %}{{ article.title }}: {{article.content | strip_html | truncatewords:maxwords}}{% endfor %}{% endif %}" />
+        <meta name="keywords" content= "{% for link in linklists.Main-Menu.links %} {% if link.type == 'collection_link' %}{{link.title}} , {% endif %} {% endfor %}" />
+
+{% endcase %}

@@ -1,0 +1,43 @@
+<div class=" col-3 clearfix page">
+	
+	<div class="extra-border clearfix">
+			<h1>{{ page.title }}</h1>
+	</div><!-- .extra-border -->
+    
+       {% if page.title == 'Why Buy From HolgaDirect' %}
+          <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" 
+    		id="ReviewWidget" width="188" height="139" 
+			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab"> 
+			<param name="movie" value="http://images.resellerratings.com/images/ReviewWidget.swf" /> 
+			<param name="quality" value="high" /> 
+			<param name="bgcolor" value="#869ca7" /> 
+			<param name="allowScriptAccess" value="sameDomain" /> 
+			<param name="FlashVars" value="feed=http%3A%2F%2Fwww.resellerratings.com%2Fwidget_snippet.php%3Fseller_id%3D35665" /> 
+			<embed src="http://images.resellerratings.com/images/ReviewWidget.swf" 
+			quality="high" bgcolor="#869ca7" width="188" height="139" name="ReviewWidget" align="middle"
+			play="true" loop="false" quality="high" allowScriptAccess="sameDomain"
+			type="application/x-shockwave-flash" 
+			pluginspage="http://www.adobe.com/go/getflashplayer" 
+			FlashVars="feed=http%3A%2F%2Fwww.resellerratings.com%2Fwidget_snippet.php%3Fseller_id%3D35665"> 
+			</embed> 
+			</object>
+        {% endif %}
+
+		</div><!-- .page -->
+
+		<div class="col-9 clearfix last  ">
+			{{ page.content }}
+
+                        <br/>
+                        {% if page.title == 'Sitemap' %}
+                            {% for collection in collections %}
+                                {% if collection.handle != 'frontpage' %}<h2><a href="{{ collection.url }}">{{ collection.title }}</a></h2><br/><ul>
+                                     {% paginate collection.products by 200 %}{% for product in collection.products %}{% if product.type != 'exclude-whatever-you-want' %}<li><a href="{{ product.url }}">{{ product.title }}</a></li>{% endif %}{% endfor %}{%  endpaginate %}</ul>{% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% if page.title == 'Search' %}
+                            {% include 'search' %}
+                        {% endif %}
+
+		</div>
+
